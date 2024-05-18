@@ -1,0 +1,9 @@
+{
+    "area_of_interest": {
+      "min_lat": -10.0,
+      "max_lat": -5.0,
+      "min_lon": -40.0,
+      "max_lon": -35.0
+    },
+    "resolution": "30m"
+  }

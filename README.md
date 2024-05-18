@@ -44,9 +44,10 @@ Este repositório contém um script para download de Modelos Digitais de Elevaç
     ```
     - `area_of_interest`: Define a área de interesse em formato de retângulo. Os valores devem ser fornecidos em graus
     - `resolution`: Define a resolução desejada para o DEM. Os valores possíveis são: `90m`, `30m` para Copernicus DEM
-2. Execute o script de download:
+
+2. Execute o script de download dos modelos digitais de elevação COPERNICUS:
     ```sh
-    sudo python3 download_dem.py
+    sudo python3 download_copernicus_dem.py
     ```
 
 ## Estrutura do Projeto
@@ -56,4 +57,3 @@ download_dem/
 ├── README.md
 ├── config.json
 └── download_dem.py
-

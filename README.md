@@ -56,5 +56,4 @@ Este repositório contém um script para download de Modelos Digitais de Elevaç
 download_dem/
 ├── README.md
 ├── config.json
-├── download_copernicus_dem.py
-└── downloader
+└── download_copernicus_dem.py

@@ -76,7 +76,10 @@ def ask_dataset_version():
 # Função para perguntar se deseja substituir arquivos existentes
 def ask_replace_existing():
     choice = input("\033[1;34mDo you want to redownload and replace existing files? (y/n): \033[0m").strip().lower()
-    return choice == 'y'
+    if choice == 'y':
+        return True
+    else:
+        return False
 
 # Função principal
 def main():

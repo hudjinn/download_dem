@@ -90,7 +90,7 @@ def main():
     replace_existing = ask_replace_existing()
     
     # Criar diretório de download se não existir
-    output_dir = "downloader"
+    output_dir = "downloaded"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 

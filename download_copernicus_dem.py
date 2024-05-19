@@ -56,22 +56,22 @@ area_of_interest = params["area_of_interest"]
 resolution = params["resolution"]
 
 # Função para perguntar a versão do dataset
-def ask_dataset_version():
-    versions = {
-        '1': '2021_1',
-        '2': '2022_1',
-        '3': '2023_1',
-        'n': 'custom'
-    }
+def ask_dataset_version(datasets):
     print("\033[1;34mSelect the dataset version:\033[0m")
-    for key, version in versions.items():
-        print(f"[{key}] - {version}")
-    choice = input("\033[1;34mEnter your choice [Default: 2023_1]: \033[0m").strip()
-    
-    if choice == 'n':
-        custom_version = input("\033[1;34mEnter the custom version (e.g., 2015_1): \033[0m").strip()
-        return custom_version
-    return versions.get(choice, '2023_1')
+    versions = {}
+    for i, dataset in enumerate(datasets):
+        dataset_name = dataset['datasetId'][:7]
+        dataset_type = dataset['datasetId'][15:19]
+        dataset_accuracy = dataset['datasetId'][12:14]
+        dataset_version = dataset['datasetId'][20:]
+        version_display = f"{dataset_name} | {dataset_type} | Spatial Resolution:{dataset_accuracy}m | Version: {dataset_version}"
+        versions[str(i + 1)] = dataset['datasetId']
+        print(f"[{i + 1}] - {version_display}")
+    print(f"\033[1;90mHelp:\tDGED (Digital Elevation Data)\n\tDTED (Digital Terrain Elevation Data)\033[0m")
+    choice = input("\033[1;34mEnter your choice: \033[0m").strip()
+    dataset_url = versions.get(choice, None)
+
+    return dataset_url  # Return None if invalid choice
 
 # Função para perguntar se deseja substituir arquivos existentes
 def ask_replace_existing():
@@ -84,7 +84,9 @@ def ask_replace_existing():
 # Função principal
 def main():
     # Perguntar a versão do dataset
-    dataset_id = f"COP-DEM_GLO-30-DGED__{ask_dataset_version()}"
+    print("\033[1;32mListing available datasets...\033[0m")
+    datasets = list_datasets()
+    dataset_id = ask_dataset_version(datasets=datasets)
     
     # Perguntar se deseja substituir arquivos existentes
     replace_existing = ask_replace_existing()
@@ -93,10 +95,6 @@ def main():
     output_dir = "downloaded"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-
-    print("\033[1;32mListing available datasets...\033[0m")
-    datasets = list_datasets()
-    print(f"\033[1;32mAvailable datasets: {datasets}\033[0m")
 
     print(f"\033[1;32mListing DEM URLs for dataset {dataset_id}...\033[0m")
     dem_urls = list_dem_urls(dataset_id)
@@ -107,6 +105,7 @@ def main():
     for item in dem_urls:
         url = item["nativeDemUrl"]
         filename = url.split('/')[-1]
+        print(filename)
         lat, lon = extract_coordinates(filename)
         if area_of_interest["min_lat"] <= lat <= area_of_interest["max_lat"] and area_of_interest["min_lon"] <= lon <= area_of_interest["max_lon"]:
             filtered_urls.append(url)

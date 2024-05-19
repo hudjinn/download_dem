@@ -26,10 +26,14 @@ def extract_tiff_from_copernicus(dem_dir, output_dir):
                         if member.name.endswith(".tif") and "DEM" in member.name:
                             member.name = os.path.basename(member.name)
                             tar.extract(member, output_dir)
+            else:
+                continue
 
 # Function to merge TIFF files
 def merge_tiff_files(input_dir, output_filepath):
     tiff_files = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith('.tif')]
+    print(tiff_files)
+    exit()
     src_files_to_mosaic = [rasterio.open(fp) for fp in tiff_files]
     mosaic, out_trans = merge(src_files_to_mosaic)
     out_meta = src_files_to_mosaic[0].meta.copy()
@@ -92,12 +96,9 @@ def clean_up_files(dem_dir, remove_downloaded):
 def main():
     # Directories
     downloaded_dir = "downloaded"
-    input_dir = "input"
     output_dir = "output"
     
     # Create necessary directories
-    if not os.path.exists(input_dir):
-        os.makedirs(input_dir)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -107,11 +108,11 @@ def main():
 
     # Extract TIFF files based on DEM source
     if dem_source == "Copernicus":
-        extract_tiff_from_copernicus(downloaded_dir, input_dir)
+        extract_tiff_from_copernicus(downloaded_dir, downloaded_dir)
 
     # Merge TIFF files
-    merged_dem = os.path.join(input_dir, "merged_dem.tif")
-    merge_tiff_files(input_dir, merged_dem)
+    merged_dem = os.path.join(output_dir, "merged_dem.tif")
+    merge_tiff_files(downloaded_dir, merged_dem)
     print("DEM files merged successfully.")
 
     # Process DEM

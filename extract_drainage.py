@@ -74,11 +74,6 @@ def main():
         print("No valid DEM files found in the input directory.")
         return
     
-    # Perguntar a versão do dataset
-    dataset_id = f"COP-DEM_GLO-30-DGED__{ask_dataset_version()}"
-    
-    # Perguntar se deseja substituir arquivos existentes
-    replace_existing = ask_replace_existing()
 
     # Saídas intermediárias
     filled_dem = os.path.join(output_dir, "filled_dem.tif")

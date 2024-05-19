@@ -54,7 +54,7 @@ def main():
 
     # Execute o script de download e processamento após a instalação
     print("Running download_dem.py...")
-    subprocess.check_call([sys.executable, 'download_dem.py'])
+    subprocess.check_call([sys.executable, 'download_copernicus_dem.py'])
 
     print("Running process_dem.py...")
     subprocess.check_call([sys.executable, 'process_dem.py'])
